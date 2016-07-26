@@ -1,5 +1,5 @@
 # Laravel-API-Debugger
-> Easily debug your JSON API.
+> Easily debug your JSON API. Dingo api supported
 
 When you are developing JSON API sometimes you need to debug it, but if you will use `dd()` or `var_dump()` you will break the output that will affect every client that is working with your API at the moment. Debugger is made to provide you with all your debug information and not corrupt the output.
 
