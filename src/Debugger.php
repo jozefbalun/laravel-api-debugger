@@ -100,7 +100,7 @@ class Debugger
      */
     private function updateRequest(Request $request, Response $response)
     {
-        if ($response && $this->needToUpdateResponse()) {
+        if ($response instanceof \Dingo\Api\Http\Response && $this->needToUpdateResponse()) {
             $data = json_decode($response->getContent());
             $data->debug = [];
 
