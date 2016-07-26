@@ -116,7 +116,21 @@ class Debugger
             }
 
             $response->setContent(json_encode($data));
-        }
+        } elseif ($response instanceof JsonResponse && $this->needToUpdateResponse()) {
+			$data = $response->getData(true);
+			if ($this->collectQueries)
+			{
+				$data['debug']['sql'] = [
+					'total_queries' => $this->queries->count(),
+					'queries' => $this->queries,
+				];
+			}
+			if ( ! $this->debug->isEmpty())
+			{
+				$data['debug']['dump'] = $this->debug;
+			}
+			$response->setData($data);
+		}
     }
 
     /**
