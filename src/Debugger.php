@@ -33,7 +33,12 @@ class Debugger
     /**
      * @var Connection
      */
-    private $connection;
+    private $db;
+
+    /**
+     * @var int
+     */
+    private $totalQueriesTime;
 
     /**
      * Create a new Debugger service.
@@ -43,10 +48,11 @@ class Debugger
      */
     public function __construct(Event $event, Connection $connection)
     {
-        $this->queries = new Collection();
-        $this->debug   = new Collection();
-        $this->event   = $event;
-        $this->db      = $connection;
+        $this->queries            = new Collection();
+        $this->debug              = new Collection();
+        $this->event              = $event;
+        $this->db                 = $connection;
+        $this->totalQueriesTime   = 0;
 
         $this->event->listen('kernel.handled', function ($request, $response) {
             $this->updateRequest($request, $response);
@@ -80,6 +86,8 @@ class Debugger
             'query' => $query,
             'time'  => $time
         ]);
+
+        $this->totalQueriesTime += $time;
     }
 
     /**
@@ -102,17 +110,21 @@ class Debugger
     {
         if ($response instanceof \Dingo\Api\Http\Response && $this->needToUpdateResponse()) {
             $data = json_decode($response->getContent());
-            $data->debug = [];
 
+            if (!$data) {
+                $data = new \stdClass();
+            }
+            $data->debug = [];
             if ($this->collectQueries) {
-                $data->debug['sql'] = (object)[
+                $data->debug['sql'] = [
                     'total_queries' => $this->queries->count(),
+                    'total_queries_time' => $this->totalQueriesTime,
                     'queries' => $this->queries,
                 ];
             }
 
             if (!$this->debug->isEmpty()) {
-                $data->debug['dump'] = (object)$this->debug;
+                $data->debug['dump'] = $this->debug;
             }
 
             $response->setContent(json_encode($data));
@@ -121,6 +133,7 @@ class Debugger
             if ($this->collectQueries) {
                 $data['debug']['sql'] = [
                     'total_queries' => $this->queries->count(),
+                    'total_queries_time' => $this->totalQueriesTime,
                     'queries' => $this->queries,
                 ];
             }
