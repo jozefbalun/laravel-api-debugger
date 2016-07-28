@@ -114,6 +114,9 @@ class Debugger
 
             if (!$data) {
                 $data = new \stdClass();
+            }
+
+            if (!property_exists($data, 'debug')) {
                 $data->debug = new \stdClass();
             }
 
