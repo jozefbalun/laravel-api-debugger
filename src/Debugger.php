@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Events\Dispatcher as Event;
 use Illuminate\Support\Facades\Log;
+use phpDocumentor\Reflection\Types\Object_;
 use Symfony\Component\HttpFoundation\Response;
 
 class Debugger
@@ -113,10 +114,11 @@ class Debugger
 
             if (!$data) {
                 $data = new \stdClass();
+                $data->debug = new \stdClass();
             }
-            $data->debug = [];
+
             if ($this->collectQueries) {
-                $data->debug['sql'] = [
+                $data->debug->sql = (object)[
                     'total_queries' => $this->queries->count(),
                     'total_queries_time' => $this->totalQueriesTime,
                     'queries' => $this->queries,
@@ -124,7 +126,7 @@ class Debugger
             }
 
             if (!$this->debug->isEmpty()) {
-                $data->debug['dump'] = $this->debug;
+                $data->debug->dump = (object)$this->debug;
             }
 
             $response->setContent(json_encode($data));
