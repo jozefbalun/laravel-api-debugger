@@ -84,7 +84,7 @@ Debugger can provide you with all SQL queries that were fired during the request
 
 It will listen to the `illuminate.query` event and add queries to the output.
 
-**Note!** It will add queries log ONLY when you set `APP_DEBUG=true`. So you don't have to worry that someone will see your queries on production.
+**Note!** It will add queries log ONLY when you set `QUERY_DEBUG=true`. So you don't have to worry that someone will see your queries on production.
 
 ### Var dump
 
