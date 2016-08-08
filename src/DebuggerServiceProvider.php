@@ -9,8 +9,8 @@ class DebuggerServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        // Enable debugger when debug = true
-        if ($this->app['config']['app.debug']) {
+        // Enable debugger when debug = true [app.debug]
+        if ($this->app['config']['app.query_debug']) {
             $this->app->make(Debugger::class)->collectDatabaseQueries();
         }
     }
