@@ -1,5 +1,5 @@
 {
-    "name": "jozefbalun/laravel-api-debugger",
+    "name": "pixwell-dev/laravel-api-debugger",
     "description": "Easily debug your JSON API.",
     "keywords": ["laravel", "framework", "api", "debug", "debugger", "json", "dump", "queries", "log"],
     "license": "MIT",
