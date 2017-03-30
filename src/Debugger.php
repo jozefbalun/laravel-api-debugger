@@ -1,6 +1,7 @@
 <?php namespace Lanin\ApiDebugger;
 
 use Illuminate\Database\Connection;
+use Illuminate\Foundation\Http\Events\RequestHandled;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
@@ -55,8 +56,8 @@ class Debugger
         $this->db                 = $connection;
         $this->totalQueriesTime   = 0;
 
-        $this->event->listen('kernel.handled', function ($request, $response) {
-            $this->updateRequest($request, $response);
+        $this->event->listen(RequestHandled::class, function (RequestHandled $event) {
+            $this->updateRequest($event->request, $event->response);
         });
     }
 
