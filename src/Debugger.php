@@ -107,10 +107,10 @@ class Debugger
     protected function updateResponse(Request $request, Response $response)
     {
         if ($this->needToUpdateResponse($response)) {
-            $data = $response->getData(true);
+            $data = json_decode($response->getContent(), true);
             $data[$this->responseKey] = $this->storage->getData();
-
-            $response->setData($data);
+            
+            $response->setContent(json_encode($data));
         }
     }
 
@@ -122,7 +122,7 @@ class Debugger
      */
     protected function needToUpdateResponse(Response $response)
     {
-        return $response instanceof JsonResponse && ! $this->storage->isEmpty();
+        return $response->headers->contains('content-type', 'application/json') && !$this->storage->isEmpty();
     }
 
     /**
