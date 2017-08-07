@@ -1,6 +1,9 @@
 <?php
 
 return [
+	
+	'response_key' => 'sql',
+	
 	/**
 	 * Specify what data to collect.
 	 */
